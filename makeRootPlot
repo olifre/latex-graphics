@@ -1,0 +1,68 @@
+#!/bin/bash
+
+MACRONAME=$1
+OUTPUTNAME=$2
+
+ROOTDIR=rootTools
+STYLEFILE=${ROOTDIR}/Style_B1.C
+STYLENAME=B1
+PLOTTER=${ROOTDIR}/plotter.C
+
+# Remake output if not there.
+if [ -e ${OUTPUTNAME} ]; then
+		REMAKE=0
+else
+		REMAKE=1
+fi
+
+# Parse filename.
+WIDTH=1000
+HEIGHT=600
+
+NAMEPART=${MACRONAME%.C}
+# prerendered-suffix used output-filetype-differentiation.
+NAMEPART=${NAMEPART%_prerendered}
+# svg-suffix used output-filetype-differentiation.
+NAMEPART=${NAMEPART%_svg}
+# Size-part:
+SIZEPART=$(echo ${NAMEPART} | sed 's#^.*_\([0-9]\+x[0-9]\+\)$#\1#')
+if [ -n ${SIZEPART} ]; then
+		# Have a size...
+		NAMEPART=${NAMEPART%_${SIZEPART}}
+		WIDTH=${SIZEPART%x*}
+		HEIGHT=${SIZEPART#*x}
+		#echo $WIDTH
+		#echo $HEIGHT
+fi
+
+MACRONAME="${NAMEPART}.C"
+
+# if we are newer...
+test ${0} -nt ${OUTPUTNAME} && REMAKE=1
+
+# if input is newer...
+test ${MACRONAME} -nt ${OUTPUTNAME} && REMAKE=1
+# if style is newer...
+test ${STYLEFILE} -nt ${OUTPUTNAME} && REMAKE=1
+# if plotter is newer...
+test ${PLOTTER} -nt ${OUTPUTNAME} && REMAKE=1
+
+ROOTFILE=${NAMEPART}.root
+if [ -e ${ROOTFILE} ]; then
+		HAVEROOTFILE=1
+		# If newer, need remake. 
+		test ${ROOTFILE} -nt ${OUTPUTNAME} && REMAKE=1
+else
+		HAVEROOTFILE=0
+fi
+
+if [ ${REMAKE} -eq 1 ]; then
+		echo "Need to remake ${OUTPUTNAME}..."
+		# Remove output so LaTeX will never pickup old stuff no matter our exit status.
+		rm ${OUTPUTNAME}
+else
+		echo "${OUTPUTNAME} still current."
+		exit 0
+fi
+
+root -x -b -l ${PLOTTER}"(\"${NAMEPART}\", \"${OUTPUTNAME}\", ${HAVEROOTFILE}, ${WIDTH}, ${HEIGHT}, \"${STYLEFILE}\", \"${STYLENAME}\")"

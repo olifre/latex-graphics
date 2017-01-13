@@ -1,0 +1,32 @@
+#!/bin/bash
+
+MACRONAME=$1
+OUTPUTNAME=${1%.C}.pdf
+
+pushd plots > /dev/null
+
+# Remake output if not there.
+if [ -e ${OUTPUTNAME} ]; then
+		REMAKE=0
+else
+		REMAKE=1
+fi
+
+# if we are newer...
+test ${0} -nt ${OUTPUTNAME} && REMAKE=1
+
+# if input is newer...
+test ${MACRONAME} -nt ${OUTPUTNAME} && REMAKE=1
+
+if [ ${REMAKE} -eq 1 ]; then
+		echo "Need to remake ${OUTPUTNAME}..."
+		# Remove output so LaTeX will never pickup old stuff no matter our exit status.
+		rm ${OUTPUTNAME}
+else
+		echo "${OUTPUTNAME} still current."
+		popd > /dev/null
+		exit 0
+fi
+
+root -q -b -l ${MACRONAME}+
+popd > /dev/null

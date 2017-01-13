@@ -1,0 +1,68 @@
+#!/bin/bash
+
+MACRONAME=$1
+OUTPUTNAME=$2
+
+TOOLDIR=gnuplotTools
+HEADER=${TOOLDIR}/header.gp
+TRAILER=${TOOLDIR}/trailer.gp
+
+# Remake output if not there.
+if [ -e ${OUTPUTNAME} ]; then
+		REMAKE=0
+else
+		REMAKE=1
+fi
+
+# Parse filename. That's in centi-inches!
+WIDTH=500
+HEIGHT=340
+
+NAMEPART=${MACRONAME%.gp}
+# prerendered-suffix used output-filetype-differentiation.
+
+# Size-part:
+SIZEPART=$(echo ${NAMEPART} | sed 's#^.*_\([0-9]\+x[0-9]\+\)$#\1#')
+if [ -n ${SIZEPART} ]; then
+		# Have a size...
+		NAMEPART=${NAMEPART%_${SIZEPART}}
+		WIDTH=${SIZEPART%x*}
+		HEIGHT=${SIZEPART#*x}
+		#echo $WIDTH
+		#echo $HEIGHT
+fi
+
+MACRONAME="${NAMEPART}.gp"
+
+# if we are newer...
+test ${0} -nt ${OUTPUTNAME} && REMAKE=1
+
+# if input is newer...
+test ${MACRONAME} -nt ${OUTPUTNAME} && REMAKE=1
+# if header is newer...
+test ${HEADER} -nt ${OUTPUTNAME} && REMAKE=1
+# if trailer is newer...
+test ${TRAILER} -nt ${OUTPUTNAME} && REMAKE=1
+
+if [ ${REMAKE} -eq 1 ]; then
+		echo "Need to remake ${OUTPUTNAME}..."
+		# Remove output so LaTeX will never pickup old stuff no matter our exit status.
+		rm ${OUTPUTNAME}
+else
+		echo "${OUTPUTNAME} still current."
+		exit 0
+fi
+
+# Convert centi-inches to inches... All that crap to prevent '.' in filenames which irritate includegraphics! 
+OWIDTH=$(bc <<< "scale = 2; ${WIDTH}/100")
+OHEIGHT=$(bc <<< "scale = 2; ${HEIGHT}/100")
+
+THISPATH=$(pwd)
+OUTPUTBASENAME=$(basename ${OUTPUTNAME%.pdf})
+pushd $(dirname ${MACRONAME}) > /dev/null
+{ cat <<END; cat ${THISPATH}/${HEADER} $(basename ${MACRONAME}) ${THISPATH}/${TRAILER}; } | gnuplot && pdflatex ${OUTPUTBASENAME}.tex
+width=${OWIDTH}
+height=${OHEIGHT}
+filebase="'${OUTPUTBASENAME}'"
+END
+popd > /dev/null
