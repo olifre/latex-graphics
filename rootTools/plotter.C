@@ -60,6 +60,18 @@ void plotter(TString macroName,
 		*/
 		c1 = new TCanvas("c1", "", width, height);
 	}
+
+	// Check if macro exists... see: https://sft.its.cern.ch/jira/browse/ROOT-8579
+	TString fullMacroName;
+	fullMacroName.Form("%s.C", macroName.Data());
+	Long_t id, flags, modtime;
+	Long64_t size;
+	int macroExists = gSystem->GetPathInfo(fullMacroName.Data(), &id, &size, &flags, &modtime);
+	if (macroExists != 0) {
+		std::cerr << "Could not stat macro '" << fullMacroName.Data() << "', exiting now!" << std::endl;
+		gROOT->ProcessLine(".q");
+	}
+
 	TString execLine = ".x " + macroName + ".C";
 	std::cout << "Running: " << execLine.Data() << std::endl;
 	TInterpreter::EErrorCode interpreterError;
