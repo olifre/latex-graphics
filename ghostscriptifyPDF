@@ -1,0 +1,31 @@
+#!/bin/bash
+
+OUTPUTNAME=${1}
+
+echo "Embedding fonts in ${OUTPUTNAME}..."
+mv ${OUTPUTNAME} ${OUTPUTNAME%.pdf}-noembed.pdf
+gs -dNOPAUSE \
+   -dBATCH \
+   -dQUIET \
+   -sDEVICE=pdfwrite \
+   -dAutoRotatePages=/None \
+   -dColorConversionStrategy=/LeaveColorUnchanged \
+   -dDownsampleMonoImages=false \
+   -dDownsampleGrayImages=false \
+   -dDownsampleColorImages=false \
+   -dAutoFilterColorImages=false \
+   -dAutoFilterGrayImages=false \
+   -dColorImageFilter=/FlateEncode \
+   -dGrayImageFilter=/FlateEncode \
+   -dEmbedAllFonts=true \
+   -dCannotEmbedFontPolicy=/Error \
+   -dUCRandBGInfo=/Preserve \
+   -dPreserveEPSInfo=true \
+   -dPreserveOPIComments=true \
+   -dPreserveOverprintSettings=true \
+   -sOutputFile=${OUTPUTNAME} \
+   -c ".setpdfwrite <</NeverEmbed [ ]>> setdistillerparams" \
+   -f ${OUTPUTNAME%.pdf}-noembed.pdf
+
+#rm ${OUTPUTNAME%.pdf}-noembed.pdf
+echo "... fonts embedded in ${OUTPUTNAME}."
