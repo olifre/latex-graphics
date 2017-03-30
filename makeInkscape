@@ -13,6 +13,9 @@ fi
 # if we are newer...
 test ${0} -nt ${OUTNAME} && REMAKE=1
 
+# if ghostscriptifyPDF is newer...
+test ghostscriptifyPDF -nt ${OUTNAME} && REMAKE=1
+
 # if input is newer...
 test ${INNAME} -nt ${OUTNAME} && REMAKE=1
 
@@ -26,3 +29,11 @@ else
 fi
 
 inkscape -D -z --file="${INNAME}" --export-pdf="${OUTNAME}"
+
+if [ $? -eq 0 ]; then
+		echo "Remaking ${OUTNAME} went well."
+		./ghostscriptifyPDF ${OUTNAME}
+else
+		echo "Remaking of ${OUTNAME} failed, removing it!"
+		rm ${OUTNAME}
+fi

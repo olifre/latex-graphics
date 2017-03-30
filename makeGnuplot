@@ -14,7 +14,7 @@ else
 		REMAKE=1
 fi
 
-# Parse filename. That's in centi-inches!
+# Parse filename. That's in centi-inches! 
 WIDTH=500
 HEIGHT=340
 
@@ -36,6 +36,9 @@ MACRONAME="${NAMEPART}.gp"
 
 # if we are newer...
 test ${0} -nt ${OUTPUTNAME} && REMAKE=1
+
+# if ghostscriptifyPDF is newer...
+test ghostscriptifyPDF -nt ${OUTPUTNAME} && REMAKE=1
 
 # if input is newer...
 test ${MACRONAME} -nt ${OUTPUTNAME} && REMAKE=1
@@ -65,4 +68,7 @@ width=${OWIDTH}
 height=${OHEIGHT}
 filebase="'${OUTPUTBASENAME}'"
 END
+
+./ghostscriptifyPDF ${OUTPUTNAME}
+
 popd > /dev/null
