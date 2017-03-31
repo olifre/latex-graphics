@@ -2,6 +2,11 @@
 
 OUTPUTNAME=${1}
 
+if [ ! -e "${OUTPUTNAME}" ]; then
+	echo "${OUTPUTNAME} does not exist, not embedding fonts!"
+	exit 1
+fi
+
 echo "Embedding fonts in ${OUTPUTNAME}..."
 mv ${OUTPUTNAME} ${OUTPUTNAME%.pdf}-noembed.pdf
 gs -dNOPAUSE \
