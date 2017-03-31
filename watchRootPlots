@@ -1,25 +1,27 @@
 #!/bin/bash
 DIM=${1:-1200x800}
 
-#while true; do
-#	PLOTFILE=$(inotifywait -q -e close_write plots/*.C | awk '{print $1}')
-#	./makeRootPlot ${PLOTFILE%.C}_${DIM}.{C,pdf}
-#	PIDOFZATHURA=$(pgrep -f -x 'zathura '${PLOTFILE%.C}_${DIM}.pdf)
-#	test -z ${PIDOFZATHURA} && zathura ${PLOTFILE%.C}_${DIM}.pdf &
-#done
+PLOTDIR=plots
 
-inotifywait -m -q --format %w%f -e close_write plots | while read PLOTFILE; do
+inotifywait -m -q --format %w%f -e close_write ${PLOTDIR} ${PLOTDIR}/*/ | while read PLOTFILE; do
+	if [[  $(grep -o "/" "${PLOTFILE}" | wc -l) -gt 1 ]]; then
+		STRIPPED_INCLUDE=${PLOTFILE#${PLOTDIR}/}
+		echo "Include file ${STRIPPED_INCLUDE} changed!"
+		for AFFECTED_FILE in $(grep -l ${STRIPPED_INCLUDE} ${PLOTDIR}/*.C); do
+			echo "... affects: ${AFFECTED_FILE}!"
+			touch ${AFFECTED_FILE}
+		done
+	fi
 	if [[ "${PLOTFILE}" != *.C ]]; then
 		continue;
 	fi
-	./makeRootPlot ${PLOTFILE%.C}_${DIM}.{C,pdf}
-	if [[ $? -eq 0 ]]; then
+	echo "Plotfile ${PLOTFILE} changed!"
+	./makeRootPlot ${PLOTFILE%.C}_${DIM}.{C,pdf} && \
+	(
+		echo "Plotfile ${PLOTFILE} remade successfully."
 		PIDOFZATHURA=$(pgrep -f -x 'zathura '${PLOTFILE%.C}_${DIM}.pdf)
 		test -z ${PIDOFZATHURA} || continue
 		echo "Start new zathura instance..."
 		zathura ${PLOTFILE%.C}_${DIM}.pdf &
-	fi
-	#echo $PIDOFZATHURA
-	#echo ${PLOTFILE%.C}_${DIM}.pdf
-	#sleep 1
+	) &
 done
