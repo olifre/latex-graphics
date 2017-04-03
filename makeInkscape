@@ -17,7 +17,7 @@ test ${0} -nt ${OUTNAME} && REMAKE=1
 test ghostscriptifyPDF -nt ${OUTNAME} && REMAKE=1
 
 # if input is newer...
-test ${INNAME} -nt ${OUTNAME} && REMAKE=1
+test $(readlink -f ${INNAME}) -nt ${OUTNAME} && REMAKE=1
 
 if [ ${REMAKE} -eq 1 ]; then
 		echo "Need to remake ${OUTNAME}..."

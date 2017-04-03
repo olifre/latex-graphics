@@ -19,7 +19,7 @@ test ${0} -nt ${OUTPUTNAME} && REMAKE=1
 test ghostscriptifyPDF -nt ${OUTPUTNAME} && REMAKE=1
 
 # if input is newer...
-test ${MACRONAME} -nt ${OUTPUTNAME} && REMAKE=1
+test $(readlink -f ${MACRONAME}) -nt ${OUTPUTNAME} && REMAKE=1
 
 # Dependencies, it's C++, sort of!
 OLD_IFS=${IFS}
@@ -30,12 +30,12 @@ MACRO_BASE_DIR=$(dirname ${MACRONAME})
 
 for DEP in ${NAMED_MACRO_DEPS}; do
 		if [[ ! "${DEP}" =~ ^/ ]]; then
-				test "${MACRO_BASE_DIR}/${DEP}" -nt ${OUTPUTNAME} && REMAKE=1
+				test $(readlink -f "${MACRO_BASE_DIR}/${DEP}") -nt ${OUTPUTNAME} && REMAKE=1
 		fi
 done
 for DEP in ${UNNAMED_MACRO_DEPS}; do
 		if [[ ! "${DEP}" =~ ^/ ]]; then
-				test "${MACRO_BASE_DIR}/${DEP}" -nt ${OUTPUTNAME} && REMAKE=1
+				test $(readlink -f "${MACRO_BASE_DIR}/${DEP}") -nt ${OUTPUTNAME} && REMAKE=1
 		fi
 done
 IFS=${OLD_IFS}

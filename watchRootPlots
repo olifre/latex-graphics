@@ -4,7 +4,7 @@ DIM=${1:-1200x800}
 PLOTDIR=plots
 
 inotifywait -m -q --format %w%f -e close_write ${PLOTDIR} ${PLOTDIR}/*/ | while read PLOTFILE; do
-	if [[  $(grep -o "/" "${PLOTFILE}" | wc -l) -gt 1 ]]; then
+	if [[ $(grep -o "/" "${PLOTFILE}" | wc -l) -gt 1 ]]; then
 		STRIPPED_INCLUDE=${PLOTFILE#${PLOTDIR}/}
 		echo "Include file ${STRIPPED_INCLUDE} changed!"
 		for AFFECTED_FILE in $(grep -l ${STRIPPED_INCLUDE} ${PLOTDIR}/*.C); do

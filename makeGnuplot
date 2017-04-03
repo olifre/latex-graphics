@@ -41,11 +41,11 @@ test ${0} -nt ${OUTPUTNAME} && REMAKE=1
 test ghostscriptifyPDF -nt ${OUTPUTNAME} && REMAKE=1
 
 # if input is newer...
-test ${MACRONAME} -nt ${OUTPUTNAME} && REMAKE=1
+test $(readlink -f ${MACRONAME}) -nt ${OUTPUTNAME} && REMAKE=1
 # if header is newer...
-test ${HEADER} -nt ${OUTPUTNAME} && REMAKE=1
+test $(readlink -f ${HEADER}) -nt ${OUTPUTNAME} && REMAKE=1
 # if trailer is newer...
-test ${TRAILER} -nt ${OUTPUTNAME} && REMAKE=1
+test $(readlink -f ${TRAILER}) -nt ${OUTPUTNAME} && REMAKE=1
 
 if [ ${REMAKE} -eq 1 ]; then
 		echo "Need to remake ${OUTPUTNAME}..."
