@@ -72,6 +72,11 @@ void plotter(TString macroName,
 		gROOT->ProcessLine(".q");
 	}
 
+	// Add Macro_Base_Path to includes, needed for ROOT 6, since we are called from a different directory...
+	TString baseDir = fullMacroName(0, fullMacroName.Last('/'));
+	std::cout << "Macro base directory is " << baseDir.Data() << "..." << std::endl;
+	gInterpreter->AddIncludePath(baseDir);
+
 	TString execLine = ".x " + macroName + ".C";
 	std::cout << "Running: " << execLine.Data() << std::endl;
 	TInterpreter::EErrorCode interpreterError;
