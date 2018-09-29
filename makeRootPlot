@@ -4,8 +4,8 @@ MACRONAME=$1
 OUTPUTNAME=$2
 
 ROOTDIR=rootTools
-STYLEFILE=${ROOTDIR}/Style_B1.C
-STYLENAME=B1
+STYLEFILE=${ROOTDIR}/Style_Example.C
+STYLENAME=Example
 PLOTTER=${ROOTDIR}/plotter.C
 
 # Remake output if not there.
