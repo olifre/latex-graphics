@@ -31,7 +31,7 @@ fi
 inkscape --version | grep -q 'Inkscape 1'
 if [ $? -eq 0 ]; then
 		# New version of Inkscape, overhauled CLI.
-		inkscape -D -z --export-file="$(pwd)/${OUTNAME}" "$(pwd)/${INNAME}"
+		inkscape -D -z --export-file="$(pwd)/${OUTNAME}" --export-pdf-version=1.4 "$(pwd)/${INNAME}"
 else
 		inkscape -D -z --file="$(pwd)/${INNAME}" --export-pdf="$(pwd)/${OUTNAME}"
 fi
