@@ -30,7 +30,7 @@ gs -dNOPAUSE \
    -dPreserveOPIComments=true \
    -dPreserveOverprintSettings=true \
    -sOutputFile=${OUTPUTNAME} \
-   -c ".setpdfwrite <</NeverEmbed [ ]>> setdistillerparams" \
+   -c "<</NeverEmbed [ ]>> setdistillerparams" \
    -f ${OUTPUTNAME%.pdf}-noembed.pdf
 
 #rm ${OUTPUTNAME%.pdf}-noembed.pdf
