@@ -1,8 +1,7 @@
 \graphicspath{
-  {./pictures/},
+  {./drawings/},
   {./plots/},
   {./gnuplots/},
-  {./photos/}
 }
 
 % ROOT plots
@@ -23,7 +22,7 @@
   \includegraphics[#1]{#2.pdf}
 }
 \newcommand{\includesvgpdf}[2][]{
-  \immediate\write18{./makeInkscape 'pictures/#2.svg' 'pictures/#2.pdf'}
+  \immediate\write18{./makeInkscape 'drawings/#2.svg' 'drawings/#2.pdf'}
   \includegraphics[#1]{#2.pdf}
 }
 % Gnuplot-plots, units are in centi-inches!
