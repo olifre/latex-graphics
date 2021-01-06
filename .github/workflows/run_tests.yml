@@ -11,7 +11,7 @@ jobs:
     - name: Install prerequisites
       run: |
         sudo apt-get -y update
-        sudo apt-get -y install inkscape gnuplot texlive texlive-fonts-extra texlive-science 
+        sudo apt-get -y install inkscape gnuplot texlive texlive-fonts-extra texlive-science texlive-font-utils
 
     - uses: actions/checkout@v2
 
