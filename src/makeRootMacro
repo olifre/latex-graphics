@@ -43,7 +43,7 @@ IFS=${OLD_IFS}
 if [ ${REMAKE} -eq 1 ]; then
 		echo "Need to remake ${OUTPUTNAME}..."
 		# Remove output so LaTeX will never pickup old stuff no matter our exit status.
-		rm ${OUTPUTNAME}
+		rm -f ${OUTPUTNAME}
 else
 		echo "${OUTPUTNAME} still current."
 		popd > /dev/null

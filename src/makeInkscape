@@ -22,7 +22,7 @@ test $(readlink -f ${INNAME}) -nt ${OUTNAME} && REMAKE=1
 if [ ${REMAKE} -eq 1 ]; then
 		echo "Need to remake ${OUTNAME}..."
 		# Remove output so LaTeX will never pickup old stuff no matter our exit status.
-		rm ${OUTNAME}
+		rm -f ${OUTNAME}
 else
 		echo "${OUTNAME} still current."
 		exit 0
