@@ -1,0 +1,26 @@
+name: "Run tests"
+
+on:
+  push
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install prerequisites
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y install inkscape gnuplot texlive
+
+    - uses: actions/checkout@v2
+
+    - name: Run tests
+      run: |
+        ./run_tests.sh
+
+    - name: Upload PDF artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-PDFs
+        path: test/*.pdf
