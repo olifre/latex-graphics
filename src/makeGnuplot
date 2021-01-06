@@ -69,6 +69,6 @@ height=${OHEIGHT}
 filebase="'${OUTPUTBASENAME}'"
 END
 
-./ghostscriptifyPDF ${OUTPUTNAME}
-
 popd > /dev/null
+
+./ghostscriptifyPDF ${OUTPUTNAME}
