@@ -1,3 +1,5 @@
+![Tests](https://github.com/olifre/latex-graphics/workflows/Run%20tests/badge.svg)
+
 # latex-graphics
 Grapics tooling for LaTeX to integrate diagrams from ROOT, Gnuplot, Inkscape SVG and potentially more
 
