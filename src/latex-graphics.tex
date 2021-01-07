@@ -18,7 +18,7 @@
 %  \includesvg[#1,svgpath=plots/]{#2_#3x#4}
 %}
 \newcommand{\includerootmacro}[2][]{
-  \immediate\write18{./makeRootMacro #2.C}
+  \immediate\write18{./makeRootMacro plots/#2.C}
   \includegraphics[#1]{#2.pdf}
 }
 \newcommand{\includesvgpdf}[2][]{

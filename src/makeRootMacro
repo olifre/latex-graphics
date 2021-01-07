@@ -3,8 +3,6 @@
 MACRONAME=$1
 OUTPUTNAME=${1%.C}.pdf
 
-pushd plots > /dev/null
-
 # Remake output if not there.
 if [ -e ${OUTPUTNAME} ]; then
 		REMAKE=0
@@ -46,18 +44,21 @@ if [ ${REMAKE} -eq 1 ]; then
 		rm -f ${OUTPUTNAME}
 else
 		echo "${OUTPUTNAME} still current."
-		popd > /dev/null
 		exit 0
 fi
 
-root -q -b -l ${MACRONAME}+
+MACRODIR=$(dirname ${MACRONAME})
+MACROBASE=$(basename ${MACRONAME})
 
-if [ $? -eq 0 ]; then
+pushd ${MACRODIR} > /dev/null
+root -q -b -l ${MACROBASE}+
+ROOT_ECODE=$?
+popd > /dev/null
+
+if [ ${ROOT_ECODE} -eq 0 ]; then
 		echo "Remaking ${OUTPUTNAME} went well."
 		./ghostscriptifyPDF ${OUTPUTNAME}
 else
 		echo "Remaking of ${OUTPUTNAME} failed, removing it!"
 		rm ${OUTPUTNAME}
 fi
-
-popd > /dev/null
