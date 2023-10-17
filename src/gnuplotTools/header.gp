@@ -15,6 +15,6 @@ set terminal epslatex standalone size width,height header \
   \\renewcommand{\\familydefault}{\\sfdefault} \n \
   \\usepackage[lm]{sfmath} \n \
   \\usepackage{microtype} \n" \
- colour font 12
+ colour colourtext font 12
 
 set out @filebase.".tex"
