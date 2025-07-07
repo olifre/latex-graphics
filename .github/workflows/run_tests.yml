@@ -29,7 +29,7 @@ jobs:
         sudo apt-get -y install libtbb12 build-essential dpkg-dev cmake g++ gcc binutils libx11-dev libxpm-dev libxft-dev libxext-dev python3 libssl-dev
         cd /opt
         wget --no-verbose https://root.cern/download/root_v6.36.00.Linux-ubuntu24.04-x86_64-gcc13.3.tar.gz
-        sudo tar xf https://root.cern/download/root_v6.36.00.Linux-ubuntu24.04-x86_64-gcc13.3.tar.gz
+        sudo tar xf root_v6.36.00.Linux-ubuntu24.04-x86_64-gcc13.3.tar.gz
 
     - uses: actions/checkout@v4
 
