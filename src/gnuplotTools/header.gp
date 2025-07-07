@@ -10,7 +10,7 @@ set terminal epslatex standalone size width,height header \
   \\usepackage{amsmath} \n \
   \\usepackage{amssymb} \n \
   \\usepackage{nicefrac} \n \
-  \\usepackage[decimalsymbol={.},per=frac,fraction=nice,tophrase=dots,seperr,repeatunits=false]{siunitx} \n \
+  \\usepackage[output-decimal-marker={.},per-mode=fraction,fraction-function=\nicefrac,range-phrase={\ldots},separate-uncertainty,multi-part-units=repeat,binary-units,detect-all=true]{siunitx} \n \
   \\usepackage[version=3]{mhchem} \
   \\renewcommand{\\familydefault}{\\sfdefault} \n \
   \\usepackage[lm]{sfmath} \n \
