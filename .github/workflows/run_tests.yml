@@ -31,7 +31,7 @@ jobs:
         wget --no-verbose https://root.cern/download/root_v6.36.00.Linux-ubuntu24.04-x86_64-gcc13.3.tar.gz
         sudo tar xf root_v6.36.00.Linux-ubuntu24.04-x86_64-gcc13.3.tar.gz
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Run tests
       run: |
